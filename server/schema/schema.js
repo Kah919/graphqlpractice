@@ -15,10 +15,10 @@ const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
         book: {
-            type: BootType,
+            type: BookType,
             args: { id: {type: GraphQLString} },
             resolve(parent, args) {
-                // code to get data from dv / other source
+                // code to get data from dv / other source"
             }
         }
     }
