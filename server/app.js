@@ -5,7 +5,8 @@ const port = 4000;
 const schema = require('./schema/schema');
 
 app.use('/graphql', graphqlHTTP({
-    schema
+    schema,
+    graphiql: true // lets us see the graphiql tool on our localhost
 }));
 
 app.listen(port, () => {
