@@ -13,19 +13,6 @@ const {
     GraphQLList
  } = graphql;
 
-// let books = [
-//     {name: 'Manga', id: '1', genre: 'temp', authorId: '1'},
-//     {name: 'Comic', id: '2', genre: 'temp', authorId: '2'},
-//     {name: 'Web Toon', id: '3', genre: 'temp', authorId: '3'},
-//     {name: 'TEst', id: '4', genre: 'temp', authorId: '2'},
-//     {name: 'Web Toon TESt', id: '5', genre: 'temp', authorId: '3'}
-// ]
-
-// let authors = [
-//     {name: 'name1', age: 20, id: '1'},
-//     {name: 'ayooooo', age: 20, id: '2'},
-//     {name: 'name3', age: 20, id: '3'}
-// ]
 
 const BookType = new GraphQLObjectType({
     name: 'Book',
@@ -106,6 +93,22 @@ const Mutation = new GraphQLObjectType({
                     age: args.age
                 }) 
                 return author.save(); // we save our new author to mongoose database
+            }
+        },
+        addBook: {
+            type: BookType,
+            args: {
+                name: { type: GraphQLString },
+                genre: { type: GraphQLString},
+                authorId: { type: GraphQLID }
+            },
+            resolve(parent, args) {
+                let book = new Book({
+                    name: args.name,
+                    genre: args.genre,
+                    authorId: args.authorId
+                })
+                return book.save();
             }
         }
     }
