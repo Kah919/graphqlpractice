@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import * as compose from 'lodash.flowright'; // used to be compose from react apollo but they removed it since lodash does the same thing
 import { getAuthorsQuery, addBookMutation } from '../queries/queries';
+import { getBooksQuery } from '../queries/queries';
 
 class AddBook extends Component {
     state = {
@@ -24,13 +25,14 @@ class AddBook extends Component {
     submitForm(e) {
         e.preventDefault()
         const { name, genre, authorId } = this.state
-        
-        this.props.addBookMutation({
+
+        this.props.addBookMutation({ // this will be sent to the queries
             variables: {
                 name: name,
                 genre: genre,
                 authorId: authorId
-            }
+            },
+            refetchQueries: [{ query: getBooksQuery }]
         })
     }
 
