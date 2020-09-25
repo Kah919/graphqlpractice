@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
-import { getAuthorsQuery } from '../queries/queries';
+import * as compose from 'lodash.flowright'; // used to be compose from react apollo but they removed it since lodash does the same thing
+import { getAuthorsQuery, addBookMutation } from '../queries/queries';
 
 class AddBook extends Component {
     state = {
@@ -10,7 +11,7 @@ class AddBook extends Component {
     }
 
     displayAuthors() {
-        const data = this.props.data
+        const data = this.props.getAuthorsQuery
         if(data.loading) {
             return(<option> Loading Authors... </option>)
         } else {
@@ -22,7 +23,15 @@ class AddBook extends Component {
 
     submitForm(e) {
         e.preventDefault()
-        console.log(this.state)
+        const { name, genre, authorId } = this.state
+        
+        this.props.addBookMutation({
+            variables: {
+                name: name,
+                genre: genre,
+                authorId: authorId
+            }
+        })
     }
 
     render() {
@@ -52,4 +61,7 @@ class AddBook extends Component {
     }
 }
 
-export default graphql(getAuthorsQuery)(AddBook);
+export default compose(
+    graphql(getAuthorsQuery, { name: "getAuthorsQuery" }),
+    graphql(addBookMutation, { name: "addBookMutation" })
+)(AddBook);
